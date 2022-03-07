@@ -56,16 +56,26 @@ data class RichTextEntity(
 )
 
 // todo 需要添加 deserializer
-open class RichTextEntityData
+abstract class RichTextEntityData
 
 enum class RichTextEnum(val desc: String) {
-    // 有默认实现
+    /**
+     * 解析器有默认 Processor
+     */
     ITALIC("italic"),
-    HOLLOW_OUT("hollowOut"),
     HIGHLIGHT("highlight"),
     SPACE("space"),
 
-    // 没有默认实现， 需要在 Builder 中传入对应 Span
+    /**
+     * 解析器没有默认实现， 需要外部传入 Processer
+     */
+    COMMENT("comment"),
+
+
+    /**
+     * 解析器不做处理， 解析后业务层处理
+     */
+    HOLLOW_OUT("hollowOut"),
     NATUARL_SPELLING("naturalSpelling"),
 }
 
