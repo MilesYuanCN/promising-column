@@ -42,9 +42,8 @@ class RichTextParserImpl(customSpanList: Map<RichTextEnum, SpannableProcessor>) 
     // todo
     val supportRichTextMap = mapOf<RichTextEnum, SpannableProcessor>(
         RichTextEnum.ITALIC to defaultItalicRichTextConfig,
-        RichTextEnum.HIGHLIGHT to ForegroundColorSpan(Color.GREEN).toSomething(),
+        RichTextEnum.HIGHLIGHT to ForegroundColorSpan(Color.GREEN).spanConvertToSpannableProcessor(),
     )
-
 
     init {
         (supportRichTextMap as MutableMap<RichTextEnum, SpannableProcessor>).putAll(customSpanList)
@@ -134,7 +133,6 @@ class RichTextParserImpl(customSpanList: Map<RichTextEnum, SpannableProcessor>) 
             } else {
                 invalidRichTextData[l] = richTextRangeData
             }
-
         }
 
         // 3. 对 valid 的类型设置 span
@@ -152,7 +150,6 @@ class RichTextParserImpl(customSpanList: Map<RichTextEnum, SpannableProcessor>) 
         return spannableStringBuilder to invalidRichTextData.values.toList()
     }
 
-    // todo 整个 Builder
     private fun log(msg: String) {
         // todo implement
     }
@@ -175,7 +172,7 @@ class RichTextParserBuilder() {
     }
 
     fun addSpan(richTextEnum: RichTextEnum, span: Any) {
-        customSpanList[richTextEnum] = span.toSomething()
+        customSpanList[richTextEnum] = span.spanConvertToSpannableProcessor()
     }
 
     fun build(): RichTextParser {
@@ -193,7 +190,7 @@ class RichTextParserBuilder() {
 
 private typealias SpannableProcessor = (spannableStringBuilder: SpannableStringBuilder, richTextRangeData: RichTextRangeData) -> SpannableStringBuilder
 
-fun Any.toSomething(): SpannableProcessor =
+fun Any.spanConvertToSpannableProcessor(): SpannableProcessor =
     { span, richTextRangeData ->
         span.setSpan(
             this,
